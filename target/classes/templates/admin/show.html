@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin :: ระบบค้นหาหอพัก</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<link rel="stylesheet"
+	th:href="@{http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css}" />
+<script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{/app.css}" href="../static/app.css"
+	media="screen" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/default.css}"
+	href="../static/css/default.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/component.css}"
+	href="../static/css/component.css" />
+<script src="../static/js/modernizr.custom.js"
+	th:src="@{/js/modernizr.custom.js}"></script>
+</head>
+<body class="fix-body-admin">
+	<div th:each="dorm : ${dorm}"></div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>ประเภท</th>
+				<th>แก้ไข</th>
+				<th>ลบ</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="dorm : ${dorm}">
+				<td th:text="${dorm.id}"></td>
+				<td th:text="${dorm.name}"></td>
+				<td th:text="${dorm.lati}"></td>
+				<td th:text="${dorm.longi}"></td>
+				<!-- <td th:text="${dorm.zoom}"></td> -->
+				<td th:text="${dorm.tel}"></td>
+				<td th:text="${dorm.price}"></td>
+				<td th:text="${dorm.price_aqua}"></td>
+				<td th:text="${dorm.price_fire}"></td>
+				<td  th:each="c : ${dorm.consume}" th:text="${c}"></td>
+				<td th:text="${dorm.category.name}"></td>
+			</tr>
+		</tbody>
+	</table>
+	<div th:each="dorm : ${dorm}">
+	<ul th:each="c : ${dorm.consume}" >
+		<li th:text="${c}"></li>
+	</ul>
+	</div>
+</body>
+</html>

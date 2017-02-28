@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>ระบบค้นหาหอพัก :: มก.ฉกส.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<!-- <script type="text/javascript"
+	th:src="@{http://maps.googleapis.com/maps/api/js?sensor=false}"></script> -->
+<script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"></script>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+	integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+	crossorigin="anonymous" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+	integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+	crossorigin="anonymous"></script>
+</head>
+<body>
+	<nav class="navbar navbar-dark bg-inverse">
+		<div class="container-fluid">
+			<span class=""> <img src="../static/image/logo/KasetLogo.png"
+				th:src="@{/image/logo/KasetLogo.png}"
+				class="size-imge-logo hidden-xs-down" alt="logo"
+				style="height: auto; width: 100px;" /> <a
+				class="navbar-brand-group" href="/" style="font-size: 22px;
+    color: whitesmoke; text-decoration: none;">ระบบค้นหาหอพัก (มก.ฉกส.)</a>
+			</span>
+			<div class="pull-md-right pull-sm-right pull-xs-right fix-top-botton">
+				<div class="clearfix hidden-md-up"></div>
+				<button type="button"
+					class="btn btn-success-outline  fix-nav-buttom" data-toggle="modal"
+					data-target=".bd-login-modal-md">เข้าสู่ระบบ</button>
+			</div>
+		</div>
+	</nav>
+
+		<!-- show -->
+		<div class="col-md-9">
+			<br />
+			<div th:each="data : ${DataDorm}">
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-block">
+							<h4 class="card-title" th:text="${data.name}">Card title</h4>
+							ประเภท : <label class="card-text" th:text="${data.category.name}"></label><br />
+							เบอร์โทร : <label class="card-text" th:text="${data.tel}"></label><br />
+							ราคาเริ่มที่ : <label class="card-text" th:text="${#numbers.formatDecimal(data.price, 0, 'COMMA', 2, 'POINT')}"></label>&nbsp;บาท/เทอม<br />
+							ห่างจาก ม.ประมาณ : <label class="card-text"
+								th:text="${data.dist}"></label><br />
+							<a th:href="@{'/{id}/show'(id=${data.id})}"
+								th:attr="name=${data.name}" class="btn btn-success-outline">รายละเอียดเพิ่มเติม</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- search -->
+		<div class="col-md-3">
+			<div class="row">
+				<div class="card">
+					<div class="card-block">
+						<form action="/S" method="post">
+							<h3>ค้นหาจากชื่อ</h3>
+							<fieldset class="form-group">
+								<input type="text"
+									class="form-control col-md-10 form-control-sm" name="nameS"
+									placeholder="ใส่ชื่อหอพักที่ต้องการหา" />
+							</fieldset>
+							<fieldset class="form-group">
+								<button
+									class="btn btn-success-outline col-md-3 col-md-offset-9 btn-sm"
+									type="submit">ค้นหา</button>
+								<br />
+							</fieldset>
+						</form>
+					</div>
+					<div class="card"></div>
+
+					<div class="card-block">
+						<form action="/_S" method="post">
+							<h3>ค้นหาจากของใช้</h3>
+							<fieldset class="form-group">
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="อินเตอร์เน็ตไร้สาย"/> อินเตอร์เน็ตไร้สาย
+									</label>
+								</div>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="อินเตอร์เน็ตสายแลน"/> อินเตอร์เน็ตสายแลน
+									</label>
+								</div>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="เครื่องปรับอากาศ"/> เครื่องปรับอากาศ
+									</label>
+								</div>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="พัดลม"/> พัดลม
+									</label>
+								</div>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="ตู้เย็น"/> ตู้เย็น
+									</label>
+								</div>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="โทรทัศน์"/> โทรทัศน์
+									</label>
+								</div>
+								<div class="checkbox">
+									<label> <input type="checkbox" name="fchecks"
+										value="เครื่องทำน้ำอุ่น"/> เครื่องทำน้ำอุ่น
+									</label>
+								</div>
+							</fieldset>
+							<fieldset class="form-group">
+								<button
+									class="btn btn-success-outline col-md-3 col-md-offset-9 btn-sm"
+									type="submit">ค้นหา</button>
+								<br />
+							</fieldset>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	<!-- modal login&register -->
+	<div class="modal fade bd-login-modal-md" tabindex="-1" role="dialog"
+		aria-labelledby="myLargeModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-md">
+			<div class="modal-content radius-modal">
+				<button type="button" class="close modal-header-fix"
+					data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<!-- body modal -->
+				<div class="row">
+					<div class="container">
+						<!-- login -->
+						<div class="">
+							<!-- <div class="card card-login"> -->
+							<div class="card-block">
+								<div class="card-head-login">
+									<h2>เข้าสู่ระบบ</h2>
+								</div>
+								<form action="/login" method="post">
+									<fieldset class="form-group">
+										<input type="text" class="form-control form-log-sign"
+											name="name" placeholder="กรอกชื่อ" />
+									</fieldset>
+									<fieldset class="form-group">
+										<input type="password" class="form-control form-log-sign"
+											name="pass" placeholder="กรอกรหัสผ่าน" />
+									</fieldset>
+									<span class="">
+										<button type="submit" name="login-form"
+											class="col-md-12 col-sm-12 col-xs-12 fix-buttom">เข้าสู่ระบบ</button>
+									</span>
+								</form>
+								<br /> <br />
+								<!-- /////// -->
+								<div class="card-head-regis">
+									<h2>สมาชิกใหม่</h2>
+								</div>
+								<form action="/regis" method="post">
+									<fieldset class="form-group">
+										<input name="name" type="text"
+											class="form-control form-log-sign" placeholder="กรอกชื่อ" />
+									</fieldset>
+									<fieldset class="form-group">
+										<input name="email" type="text"
+											class="form-control form-log-sign" placeholder="กรอกอีเมล" />
+									</fieldset>
+									<fieldset class="form-group">
+										<input name="pass" type="password"
+											class="form-control form-log-sign" placeholder="กรอกรหัสผ่าน" />
+									</fieldset>
+									<fieldset class="form-group">
+										<input type="password" class="form-control form-log-sign"
+											placeholder="กรอกรหัสผ่านเพื่อยืนยัน" />
+									</fieldset>
+									<span class="">
+										<button type="submit"
+											class="col-md-12 col-sm-12 col-xs-12 fix-buttom">สมัครสมาชิก</button>
+									</span>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style="border-top-width: 0px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- ////////////// -->
+
+	<footer class="text-link-coppyright bg-footter col-md-12" style="color: white; background-color: #373a3c; ">
+		<center >
+			© 2016 <a th:href="@{https://www.facebook.com/chakkarinyinghan}"
+				class="text-link-coppyright" style="text-decoration: none; color: white;">Chakkarin Yinghan</a>
+		</center>
+	</footer>
+</body>
+</html>
