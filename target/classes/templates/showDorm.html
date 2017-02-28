@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>รายละเอียดหอพัก</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<script src="/webjars/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+	integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd"
+	crossorigin="anonymous" />
+<script th:src="@{https://code.jquery.com/jquery-1.10.2.min.js}"></script>
+<style type="text/css">
+#googleMap {
+	margin: auto;
+	width: auto;
+	height: 297px;
+	overflow: hidden;
+	margin: 0;
+}
+</style>
+</head>
+<body>
+<div class="col-md-1">
+
+<!-- <label>คะแนนเฉลี่ยหอพัก : </label><label  th:text="${#aggregates.avg(${Scomment.star})}">ยังไม่มีคะแนน</label>-->
+</div>
+	<form action="/S">
+		<div class="container-fulid col-md-1 col-md-offset-10">
+			<button type="submit" class="btn btn-danger-outline">กลับ</button>
+		</div>
+	</form>
+	<!-- image -->
+	<div class="col-md-5">
+		<div class="container">
+			<div class="row">
+				<div id="carousel-example-captions" class="carousel slide"
+					data-ride="carousel">
+					<div class="carousel-inner" role="listbox">
+						<div class="carousel-item active">
+							<img data-src="holder.js/900x500/auto/#777:#777" alt="900x500"
+								th:src="@{/images/Capture.PNG}"
+								data-holder-rendered="true" style="width: 100%; height: 337px;" />
+						</div>
+						<div class="carousel-item" th:each="img : ${img}">
+							<img data-src="holder.js/900x500/auto/#777:#777" alt="900x500"
+								th:src="${img.imge}" data-holder-rendered="true"
+								style="width: 100%; height: 337px;" />
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-example-captions"
+						role="button" data-slide="prev"> <span class="icon-prev"
+						aria-hidden="true"></span> <span class="sr-only">Previous</span>
+					</a> <a class="right carousel-control"
+						href="#carousel-example-captions" role="button" data-slide="next">
+						<span class="icon-next" aria-hidden="true"></span> <span
+						class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<div id="googleMap"></div>
+		</div>
+	</div>
+
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs col-md-7" role="tablist">
+		<li class="nav-item"><a class="nav-link active" data-toggle="tab"
+			href="#profile" role="tab">ข้อมูลหอพัก </a></li>
+		<li class="nav-item"><a class="nav-link" data-toggle="tab"
+			href="#comment" role="tab">ความคิดเห็น</a></li>
+	</ul>
+
+	<div class="clerfix"></div>
+	<!-- Tab panes -->
+	<div class="tab-content col-md-7">
+		<div class="tab-pane active" id="profile" role="tabpanel">
+		<br/>
+			หอพัก: <label th:text="${dorm.name}"></label><br /> ประเภท : <label
+				th:text="${dorm.category.name}"></label><br /> ห่างจากตัว ม. ประมาณ
+			: <label th:text="${dorm.dist}"></label><br /> ค่าเช่า : <label
+				th:text="${#numbers.formatDecimal(dorm.price, 0, 'COMMA', 2, 'POINT')}"></label> บาทต่อเทอม <br />ค่าน้ำ : <label
+				th:text="${dorm.price_aqua}"></label> บาทต่อเดือน <br />ค่าไฟหน่วยละ :
+			<label th:text="${dorm.price_fire}"></label> บาท <br /> เบอร์โทร : <label
+				th:text="${dorm.tel}"></label><br /> ของใช้ภายในหอ : <br />
+			<ul th:each="L : *{dorm.consume}">
+				<li th:text="${L}"></li>
+			</ul>
+			<a class="btn btn-success"
+				th:href="@{https://www.google.co.th/maps/dir//__${dorm.lati}__,__${dorm.longi}__/@__${dorm.lati}__,__${dorm.longi}__,14z}">นำทาง</a>
+		</div>
+		<div class="tab-pane" id="comment" role="tabpanel">
+
+			<!-- show comment -->
+			<br /> 
+			<!-- คะแนนเฉลี่ยหอพัก &nbsp;<label>0</label> &nbsp;คะแนน  -->
+			<br />
+			<div style="width: 100%; height: 340px; overflow-y: scroll;">
+				<div class="container">
+					<div class="card" th:each="sc : ${Scomment}">
+						<div class="card-header">
+							<label th:text="${sc.star}"></label> &nbsp;คะแนน &nbsp;<small>เมื่อ
+								<label th:text="${sc.commentDate}"></label>
+							</small>
+						</div>
+						<div class="card-block">
+							คุณ : <label th:text="${sc.user.name}"></label>
+							<p class="card-text">
+								<label th:text="${sc.message}"></label>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- script map -->
+	<script type="text/javascript"
+		th:src='@{http://maps.google.com/maps/api/js?sensor=false;libraries=places}'></script>
+	<script th:inline="javascript">
+	/*<![CDATA[*/
+	    var lati = [[${dorm.lati}]];
+		var lng = [[${dorm.longi}]];
+		var myCenter = new google.maps.LatLng(lati, lng);
+
+		function initialize() {
+			var mapProp = {
+				center : myCenter,
+				zoom : 14,
+				mapTypeId : google.maps.MapTypeId.ROADMAP
+			};
+
+			var map = new google.maps.Map(document.getElementById("googleMap"),
+					mapProp);
+
+			var marker = new google.maps.Marker({
+				position : myCenter,
+			});
+
+			marker.setMap(map);
+		}
+
+		google.maps.event.addDomListener(window, 'load', initialize);
+		/*]]>*/
+	</script>
+
+	<script src="/webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+	<script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+		integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+		crossorigin="anonymous"></script>
+		<footer class="text-link-coppyright bg-footter col-md-12" style="color: white; background-color: #373a3c; ">
+		<center >
+			© 2016 <a th:href="@{https://www.facebook.com/chakkarinyinghan}"
+				class="text-link-coppyright" style="text-decoration: none; color: white;">Chakkarin Yinghan</a>
+		</center>
+	</footer>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Admin :: ระบบค้นหาหอพัก</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<link rel="stylesheet"
+	th:href="@{http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css}" />
+<script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<link rel="stylesheet" th:href="@{/app.css}" href="../static/app.css"
+	media="screen" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/default.css}"
+	href="../static/css/default.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/component.css}"
+	href="../static/css/component.css" />
+<script src="../static/js/modernizr.custom.js"
+	th:src="@{/js/modernizr.custom.js}"></script>
+</head>
+<body class="fix-body-admin">
+	<!-- nav Admin -->
+	<nav class="navbar navbar-light bg-faded">
+		<a class="navbar-brand" href="#">Admin</a>
+		<ul class="nav navbar-nav">
+			<li class="nav-item "><a class="nav-link" href="/admin">ประเภทหอพัก
+					<span class="sr-only">(current)</span>
+			</a></li>
+			<li class="nav-item"><a class="nav-link" href="/admin/sdorm">ข้อมูลหอพัก</a>
+			</li>
+			<li class="nav-item  "><a class="nav-link" href="/admin/up">เพิ่มรูป</a>
+			</li>
+			<li class="nav-item active"><a class="nav-link" href="#">ความคิดเห็นสมาชิก</a>
+			</li>
+			<li class="nav-item"><a class="nav-link" href="/admin/user">สมาชิก</a></li>
+			<li class="nav-item"><a class="nav-link" href="/">ออกจากระบบ</a></li>
+		</ul>
+	</nav>
+
+	<div class="container" style="padding-bottom: 19px;">
+		<div class="card" th:each="sc : ${comment}">
+			<div class="card-header">
+				<label th:text="${sc.star}"></label> &nbsp;คะแนน &nbsp;<small>เมื่อ
+					<label th:text="${sc.commentDate}"></label>&nbsp;&nbsp;ที่&nbsp;&nbsp;<label
+					th:text="${sc.dorm.name}"></label>&nbsp;&nbsp;&nbsp;&nbsp;<a
+					class="btn btn-danger btn-sm" th:href="@{'/admin/{id}/deletecomment'(id=${sc.id})}"
+							th:attr="name=${sc.message}" onclick="myFunction()">ลบ</a>
+				</small>
+			</div>
+			<div class="card-block">
+				คุณ : <label th:text="${sc.user.name}"></label>
+				<p class="card-text">
+					<label th:text="${sc.message}"></label>
+				</p>
+			</div>
+		</div>
+		<br/>
+	</div>
+	
+<script>
+function myFunction() {
+    var txt;
+    var r = confirm("คุณต้องการลบ ?");
+    if (r == true) {
+        alert('ทำการลบแล้ว');
+    }
+}
+</script>
+<footer class="text-link-coppyright bg-footter col-md-12" style="color: white; background-color: #373a3c; ">
+		<center >
+			© 2016 <a th:href="@{https://www.facebook.com/chakkarinyinghan}"
+				class="text-link-coppyright" style="text-decoration: none; color: white;">Chakkarin Yinghan</a>
+		</center>
+	</footer>
+</body>
+</html>

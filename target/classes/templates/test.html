@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>ระบบค้นหาหอพัก :: มก.ฉกส.</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="x-ua-compatible" content="ie=edge" />
+<script type="text/javascript"
+	th:src="@{http://maps.googleapis.com/maps/api/js?sensor=false}"></script>
+<link rel="stylesheet" th:href="@{/app.css}" href="../static/app.css"
+	media="screen" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/default.css}"
+	href="../static/css/default.css" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/component.css}"
+	href="../static/css/component.css" />
+<script src="../static/js/modernizr.custom.js" th:src="@{/js/modernizr.custom.js}"></script>
+<script th:src="@{/app.js}" src="../static/app.js"></script>
+<script src="/webjars/jquery/2.1.4/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+<!-- Control map -->
+</head>
+<body>
+	<div id="map-canvas" class="fix-map col-md-9"></div>
+	
+	
+	<script th:inline="javascript" th:each="show : ${show}">
+	/*<![CDATA[*/
+	
+	function initialize() {
+		var showLat = /*[[${show.lati}]]*/;
+	    var showLon = /*[[${show.longi}]]*/;
+	    //เก็บค่าลงในอาร์เรย์
+	    var arr=new Array();
+	    arr.push({showLat,showLon});
+		var myLatlng = new google.maps.LatLng(17.288085, 104.1367994);
+		var mark = new google.maps.LatLng(showLat, showLon);
+		/*]]>*/
+		var mapOptions = {
+			zoom : 14,
+			center : myLatlng
+		}
+		map= new google.maps.Map(document.getElementById("map-canvas"),
+				mapOptions);
+		var contentString = '<div class="container-fluid" style="font-size: 15px;">\n\
+	                               ชื่อหอ : หอxxxxxx<br/>\n\
+	                               ประเภทหอ : หอพักหญิง<br/>\n\
+	                               ห่างจาก ม. ประมาณ : 12 ม.<br/>\n\
+	                               เบอร์ติดต่อ : 0822040479<br/>\n\
+	<a th:href="@{#}" data-toggle="modal" data-target="#myModal2">ดูเพิ่มเติม</a></div>';
+
+		var infowindow = new google.maps.InfoWindow({
+			content : contentString
+		}); 
+		for (var i = 0; i < arr.length; i++)
+		{  
+			 var myPosition = new google.maps.LatLng(arr[0]["showLat"], arr[0]["showLon"]);
+			 var marker = new google.maps.Marker({
+				map: map,
+				position: myPosition
+			});
+			console.log(arr[0]["showLat"] +":"+ arr[0]["showLon"])
+		}
+		
+	 google.maps.event.addListener(marker, 'click', function() {
+		infowindow.open(map, marker);
+	}); 
+	 }
+	google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
+</body>
+</html>
